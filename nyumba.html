@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title>Display a map</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.48.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.48.0/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        body { margin:0; padding:0; }
+        #map { position:absolute; top:0; bottom:0; width:100%; }
+    </style>
+</head>
+<body>
+
+<div id='map'></div>
+<script>
+mapboxgl.accessToken = 'pk.eyJ1Ijoid2Fuam9oaWtpYnVpIiwiYSI6IjdmNmExN2E5Zjc5MGFmNjJhNzEyY2UwMGY5NzQyNzZlIn0.xjFXt6Np2RA7iXIp6hJqkw';
+var mizzap = L.mapbox.map('mapid', 'skorasaurus.5eb85050')
+    .setView([41.500880, -81.694036], 16);
+
+
+// https://www.mapbox.com/foundations/building-a-store-locator/
+// initializes feature layer for use later: 
+// https://github.com/maptime/maptime-bites/blob/gh-pages/00004/index.html
+var featLayer = L.mapbox.featureLayer().addTo(mizzap);
+
+featLayer.loadURL('dtparking.geojson');
+
+mizzap.legendControl.addLegend(document.getElementById('legend').innerHTML);
+
+// inspired by http://geosprocket.github.io/btv-geographic/social/sociallayers.js 
+function getMyColor(myargument) {
+    if (myargument === 'multi-storey') {
+        return '#996767'
+    };
+    if (myargument === 'surface') {
+        return '#679967'
+    };
+    if (myargument === 'underground') {
+        return '#676799'
+    };
+}
+
+// styles each polygon based on its properties in the geojson file, using leaflet's setStyle
+featLayer.on('ready', function() {
+    featLayer.eachLayer(function(polygon) {
+        polygon.bindPopup('This is a ' + polygon.feature.properties.parking + ' parking lot');
+        console.log(typeof setStyle);
+        polygon.setStyle({
+            opacity: 0.55,
+            fillOpacity: 0.55,
+            fillColor: getMyColor(polygon.feature.properties.parking),
+            color: getMyColor(polygon.feature.properties.parking) * 1.04
+        });
+    });
+});
+</script>
+
+</body>
+</html>
