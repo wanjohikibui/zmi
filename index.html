@@ -72,7 +72,7 @@
 mapboxgl.accessToken = 'pk.eyJ1Ijoid2Fuam9oaWtpYnVpIiwiYSI6IjdmNmExN2E5Zjc5MGFmNjJhNzEyY2UwMGY5NzQyNzZlIn0.xjFXt6Np2RA7iXIp6hJqkw';
 var map = new mapboxgl.Map({
     container: 'map', // container id
-    style: 'mapbox://styles/mapbox/streets-v9', // stylesheet location
+    style: 'mapbox://styles/wanjohikibui/cjlki4glg3d2s2sqtmscw7ls2', // stylesheet location
     center: [36.874123, -1.311282], // starting position [lng, lat]
     zoom: 16,    // starting zoom
     // style: 'mapbox://styles/mapbox/satellite-v9'
@@ -118,7 +118,7 @@ map.on('load', function() {
     map.on('click', 'buildings', function (e) {
         new mapboxgl.Popup()
             .setLngLat(e.lngLat)
-            .setHTML(e.features[0].properties.BRN, e.features[0].properties.houses)
+            .setHTML("<strong>" + e.features[0].properties.BRN + "</strong><p> There are " + e.features[0].properties.houses + " houses in the Building </p>")
             .addTo(map);
     });
 
